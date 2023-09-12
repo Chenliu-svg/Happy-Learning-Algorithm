@@ -1,2 +1,7 @@
 # Happy-Learning-Algorithm
-Happy coding :P
+
+This is a record of my algorithm learning. Happy coding :P
+
+___
+
+- [x] KMP Algorithm for Pattern Searching
