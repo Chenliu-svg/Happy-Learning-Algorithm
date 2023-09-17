@@ -235,3 +235,141 @@ ListNode* mergeKLists(vector<ListNode*>& lists) {
 Time complex: We need $O(log(k))$ to get the smallest one in a min-heap (heapify), and we need to get N (the total number of nodes) of the smallest one. So the final complex is $O(Nlog(k))$.
 ___
 
+### Leecode 19 [remove-nth-node-from-end-of-list](https://leetcode.cn/problems/remove-nth-node-from-end-of-list/)
+
+The inconvenience of link list is that we don't know the length just given the head node. Under this situation, double pointers trick helps.
+
+> Double pointers: let p1 moves n nodes ahead, and be careful with the bounding check (when n==length of the LinkList). Also, to delete the n-th node, we actually need to find the  previous node of it.
+
+*python version*
+
+```python
+def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
+
+    # double pointer:p1,p2
+    p1=head
+    p2=head # the node after p2 is the very one we want to delete
+    
+
+    # p1 moves k steps ahead
+    for i in range(n+1):
+        # bounding check, if n=sz
+        if (p1==None):
+            # is to delete the head node
+            return head.next
+
+        p1=p1.next
+
+    # p1,p2 move synchronize
+    while p1:
+        p1=p1.next   
+        p2=p2.next
+
+    # delete the n-th node
+    p2.next=p2.next.next
+
+    return head
+```
+
+*c++ version*
+
+```c++
+ListNode* removeNthFromEnd(ListNode* head, int n) {
+    // doouble pointers: p1,p2
+
+    ListNode* p1=head;
+    ListNode* p2=head; // the previous node of the node we want to delete
+
+    // p1 moves n+1 steps ahead
+
+    for (int i=0; i<n+1;i++){
+        if (p1==nullptr){
+            return head->next;
+        }
+
+        p1=p1->next;
+    }
+
+    while (p1!=nullptr){
+        p1=p1->next;
+        p2=p2->next;
+    }
+
+    p2->next=p2->next->next;
+
+    return head;
+
+}
+
+
+// Or using the virtual node trick
+
+ListNode* removeNthFromEnd(ListNode* head, int n) {
+    // doouble pointers: p1,p2
+
+    ListNode* p1=new ListNode(); // using the virtual node trick
+    ListNode* res=p1;
+    p1->next=head;
+    ListNode* p2=p1; // the previous node of the node we want to delete
+    
+    // p1 moves n+1 steps ahead
+
+    for (int i=0; i<n+1;i++){
+        // if (p1==nullptr){
+        //     return head->next;
+        // } 
+
+        p1=p1->next;
+    }
+
+    // move synchronize
+
+    while (p1!=nullptr){
+        p1=p1->next;
+        p2=p2->next;
+    }
+
+    p2->next=p2->next->next;
+
+    // virtual node trick
+    return res->next;
+}
+```
+___
+
+### Leecode 876 [middle-of-the-linked-list](middle-of-the-linked-list)
+
+*Python version*
+
+```python
+def middleNode(self, head: Optional[ListNode]) -> Optional[ListNode]:
+    # double pointer trick
+    fast=head
+    slow=head
+
+    # fast pointer moves two steps and slow pointer moves one steps
+    while fast!=None and fast.next !=None:
+        slow=slow.next
+        fast=fast.next.next
+
+    return slow
+```
+
+*c++ version*
+
+```c+=
+ ListNode* middleNode(ListNode* head) {
+
+    ListNode* fast=head;
+    ListNode* slow=head;
+
+    while (fast!=nullptr && fast->next !=nullptr){
+        fast=fast->next->next;
+        slow=slow->next;
+    }
+
+    return slow;
+
+}
+```
+
